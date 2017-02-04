@@ -21,15 +21,25 @@ import re
 
 ## Write code to define your parse_counted_words function here.
 
+#def parse_counted_words(string):
+#    tups = []
+#    parse = (re.findall(r"^\d+\s+[a-zA-Z]*", string))
+#    return parse[-1]
 
-
-
+#x = parse_counted_words('5 watermelons, 13 pineapples, and 1 papaya.')
+#print(x)
 ## PART 2: 200 points
 
 ## We have provided a text file computer_paths.txt. It's not incredibly long -- you can scan through it, but do NOT hard code your answers! Each line contains 1 filesystem path.
 
 ## (a) Write Python code to determine how many of these paths identify FILES, not directories. Save that number in the variable file_paths_num.
-
+infile = open("./computer_paths.txt", "r")
+lst = []
+for aline in infile:
+    aline = aline.rstrip()
+    if re.findall("\d*[.]", aline):
+        lst.append(aline)
+file_paths_num = len(lst)
 ## (b) Write Python code to determine how many of these paths are FULL paths, not relative paths. Save that number in the variable full_paths_num.
 
 ## (c) Write Python code to determine how many of these paths describe a Python file saved inside a folder called SI206. Save that number in the variable python_course_paths.
