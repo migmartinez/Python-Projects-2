@@ -43,14 +43,24 @@ file_paths_num = len(file_lst)
 infile.close()
 ## (b) Write Python code to determine how many of these paths are FULL paths, not relative paths. Save that number in the variable full_paths_num.
 infile2 = open('./computer_paths.txt', 'r')
-pattern = r'^[/~]'
+pattern2 = r'^[/~]'
 full_lst = []
 for line in infile2:
     line = line.rstrip()
-    if re.findall(pattern, line):
+    if re.findall(pattern2, line):
         full_lst.append(line)
 full_paths_num = len(full_lst)
+infile2.close()
 ## (c) Write Python code to determine how many of these paths describe a Python file saved inside a folder called SI206. Save that number in the variable python_course_paths.
+infile3 = open('./computer_paths.txt', 'r')
+pattern3 = r'[SI][206]\S+[.][py]'
+py_lst = []
+for pline in infile3:
+    pline = pline.rstrip()
+    if re.findall(pattern3, pline):
+        py_lst.append(pline)
+python_course_paths = len(py_lst)
+print(py_lst)
 
 ## (d) Write Python code to determine how many of these paths describe a Microsoft file (a file that EITHER ends with .docx OR .xlsx, but nothing else counts) where the file name ends in a digit. Save that total in the variable microsoft_files_num.
 
