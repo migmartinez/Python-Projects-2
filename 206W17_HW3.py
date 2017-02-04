@@ -60,15 +60,17 @@ for pline in infile3:
     if re.findall(pattern3, pline):
         py_lst.append(pline)
 python_course_paths = len(py_lst)
-print(py_lst)
-
+infile3.close()
 ## (d) Write Python code to determine how many of these paths describe a Microsoft file (a file that EITHER ends with .docx OR .xlsx, but nothing else counts) where the file name ends in a digit. Save that total in the variable microsoft_files_num.
-
-
-
-
-
-
+infile4 = open('./computer_paths.txt', 'r')
+pattern4 = r'\d[.][xlsd]'
+micro_lst = []
+for mline in infile4:
+    mline = mline.rstrip()
+    if re.findall(pattern4, mline):
+        micro_lst.append(mline)
+microsoft_files_num = len(micro_lst)        
+infile4.close()
 ## We have provided unit tests in this file. To earn the full 500 points, you'll need to pass all of the tests and will need to have followed the instructions.
 ## Each class of the tests represents one "part" of the homework, and the points for each part are divided approx. equally between each of the tests.
 
