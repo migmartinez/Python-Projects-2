@@ -21,56 +21,57 @@ import re
 
 ## Write code to define your parse_counted_words function here.
 
-#def parse_counted_words(string):
-#    tups = []
-#    parse = (re.findall(r"^\d+\s+[a-zA-Z]*", string))
-#    return parse[-1]
+def parse_counted_words(string):
+    pattern1 = "\\b(\d+)\\s(.[A-Za-z]+)"
+    answer = re.findall(pattern1, string)
+    if answer:
+        return answer[-1]
+    return None
 
-#x = parse_counted_words('5 watermelons, 13 pineapples, and 1 papaya.')
-#print(x)
 ## PART 2: 200 points
 
 ## We have provided a text file computer_paths.txt. It's not incredibly long -- you can scan through it, but do NOT hard code your answers! Each line contains 1 filesystem path.
 
 ## (a) Write Python code to determine how many of these paths identify FILES, not directories. Save that number in the variable file_paths_num.
-infile = open("./computer_paths.txt", "r")
+infile2a = open("./computer_paths.txt", "r")
+pattern2a = r"\d*[.]"
 file_lst = []
-for aline in infile:
+for aline in infile2a:
     aline = aline.rstrip()
-    if re.findall(r"\d*[.]", aline):
+    if re.findall(pattern2a, aline):
         file_lst.append(aline)
 file_paths_num = len(file_lst)
-infile.close()
+infile2a.close()
 ## (b) Write Python code to determine how many of these paths are FULL paths, not relative paths. Save that number in the variable full_paths_num.
-infile2 = open('./computer_paths.txt', 'r')
-pattern2 = r'^[/~]'
+infile2b = open('./computer_paths.txt', 'r')
+pattern2b = r'^[/~]'
 full_lst = []
-for line in infile2:
-    line = line.rstrip()
-    if re.findall(pattern2, line):
-        full_lst.append(line)
+for bline in infile2b:
+    bline = bline.rstrip()
+    if re.findall(pattern2b, bline):
+        full_lst.append(bline)
 full_paths_num = len(full_lst)
-infile2.close()
+infile2b.close()
 ## (c) Write Python code to determine how many of these paths describe a Python file saved inside a folder called SI206. Save that number in the variable python_course_paths.
-infile3 = open('./computer_paths.txt', 'r')
-pattern3 = r'[SI][206]\S+[.][py]'
+infile2c = open('./computer_paths.txt', 'r')
+pattern2c = r'[SI][206]\S+[.][py]'
 py_lst = []
-for pline in infile3:
-    pline = pline.rstrip()
-    if re.findall(pattern3, pline):
-        py_lst.append(pline)
+for cline in infile2c:
+    cline = cline.rstrip()
+    if re.findall(pattern2c, cline):
+        py_lst.append(cline)
 python_course_paths = len(py_lst)
-infile3.close()
+infile2c.close()
 ## (d) Write Python code to determine how many of these paths describe a Microsoft file (a file that EITHER ends with .docx OR .xlsx, but nothing else counts) where the file name ends in a digit. Save that total in the variable microsoft_files_num.
-infile4 = open('./computer_paths.txt', 'r')
-pattern4 = r'\d[.][xlsd]'
+infile2d = open('./computer_paths.txt', 'r')
+pattern2d = r'\d[.][xlsd]'
 micro_lst = []
-for mline in infile4:
-    mline = mline.rstrip()
-    if re.findall(pattern4, mline):
-        micro_lst.append(mline)
+for dline in infile2d:
+    dline = dline.rstrip()
+    if re.findall(pattern2d, dline):
+        micro_lst.append(dline)
 microsoft_files_num = len(micro_lst)        
-infile4.close()
+infile2d.close()
 ## We have provided unit tests in this file. To earn the full 500 points, you'll need to pass all of the tests and will need to have followed the instructions.
 ## Each class of the tests represents one "part" of the homework, and the points for each part are divided approx. equally between each of the tests.
 
