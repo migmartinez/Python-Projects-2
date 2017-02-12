@@ -43,14 +43,10 @@ infile.close()
 ## NOTE that the provided link does not include saving the online data in a file as part of the process. But it still provides very useful hints/tricks about how to look for and identify the headlines on the NY Times page.
 infile2 = open('nytimes_data.html', 'r', encoding='utf-8')
 soup = BeautifulSoup(infile2, 'html.parser')
-nytimes_headlines = []
-counter = 0
-while counter < 11:
-	for link in soup.find_all('h2',{'class':'story-heading'}):
-		nytimes_headlines.append(link.text)
-	counter += 1
-
-
+nytimes_long_headlines = []
+for link in soup.find_all('h2',{'class':'story-heading'}):
+	nytimes_long_headlines.append(link.text)
+nytimes_headlines = nytimes_long_headlines[0:10]
 
 
 #####################
@@ -76,22 +72,19 @@ htmldoc = response.text
 soup = BeautifulSoup(htmldoc,"html.parser")
 people = soup.find_all("div",{"class":"views-row"})
 umsi_titles = {}
-print(people)
+#print(people)
 ## It may be helpful to translate the following from English to code:
 
 ## For each element in the list saved in the variable people,
 ## Find the container that holds the name that belongs to that person (HINT: look for something unique, like a property element...)
 ## Find the container that holds the title that belongs to that person (HINT: a class name)
 ## Grab the text of each of those elements and put them in the dictionary umsi_titles properly
-name_list = []
-for elem in soup.find_all('div',{"class":"field-item even", "property":"dc:title"},'h2'):
-	name_list.append(elem.text)
-print(name_list)
 
-title_list = []
-for title in soup.find_all('div',{"class":"field field-name-field-person-titles field-type-text field-label-hidden"}):
-	title_list.append(title.text)
-print(title_list)
+for i in people:
+	for title in i.find_all('div',{"class":"field field-name-field-person-titles field-type-text field-label-hidden"}):
+		for elem in i.find_all('div',{"class":"field-item even", "property":"dc:title"},'h2'):
+			umsi_titles[elem.text] = title.text
+print(umsi_titles)
 
 
 
