@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 ## Miguel Martinez
 ## COMMENT WITH:
 ## Your section day/time: Thursdays, 6-7pm
-## Any names of people you worked with on this assignment:
+## Any names of people you worked with on this assignment: N/A.
 
 #####################
 
@@ -15,13 +15,20 @@ from bs4 import BeautifulSoup
 ## Write the Python code to do so here.
 html_data = requests.get('http://www.nytimes.com').text
 infile = open('nytimes_data.html', 'w', encoding='utf-8')
+soup = BeautifulSoup(html_data, 'html.parser')
 infile.write(html_data)
-print(infile)
 infile.close()
 #####################
 
 ## PART 2 (200 points)
 ## Write code to get the first 10 headlines from the New York Times, based on the data you saved in the file in Part 1, and save those strings in a list called nytimes_headlines. 
+infile2 = open('nytimes_data.html', 'r', encoding='utf-8')
+nytimes_headlines = []
+counter = 0
+while counter < 11:
+	for link in soup.find_all('h2',{'class':'story-heading'}):
+		nytimes_headlines.append(link.text)
+	counter += 1
 
 ## Note that you will almost certainly need to do some investigation on the http://nytimes.com website to do this correctly, even after saving the file in Part 1.
 
