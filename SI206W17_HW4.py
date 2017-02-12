@@ -15,20 +15,12 @@ from bs4 import BeautifulSoup
 ## Write the Python code to do so here.
 html_data = requests.get('http://www.nytimes.com').text
 infile = open('nytimes_data.html', 'w', encoding='utf-8')
-soup = BeautifulSoup(html_data, 'html.parser')
 infile.write(html_data)
 infile.close()
 #####################
 
 ## PART 2 (200 points)
-## Write code to get the first 10 headlines from the New York Times, based on the data you saved in the file in Part 1, and save those strings in a list called nytimes_headlines. 
-infile2 = open('nytimes_data.html', 'r', encoding='utf-8')
-nytimes_headlines = []
-counter = 0
-while counter < 11:
-	for link in soup.find_all('h2',{'class':'story-heading'}):
-		nytimes_headlines.append(link.text)
-	counter += 1
+## Write code to get the first 10 headlines from the New York Times, based on the data you saved in the file in Part 1, and save those strings in a list called nytimes_headlines.
 
 ## Note that you will almost certainly need to do some investigation on the http://nytimes.com website to do this correctly, even after saving the file in Part 1.
 
@@ -49,6 +41,14 @@ while counter < 11:
 ## Write your code to complete this task here.
 ## HINT: Remember that you'll need to open the file you created in Part 1, read the contets into one big string, and make a BeautifulSoup object out of that string!
 ## NOTE that the provided link does not include saving the online data in a file as part of the process. But it still provides very useful hints/tricks about how to look for and identify the headlines on the NY Times page.
+infile2 = open('nytimes_data.html', 'r', encoding='utf-8')
+soup = BeautifulSoup(infile2, 'html.parser')
+nytimes_headlines = []
+counter = 0
+while counter < 11:
+	for link in soup.find_all('h2',{'class':'story-heading'}):
+		nytimes_headlines.append(link.text)
+	counter += 1
 
 
 
