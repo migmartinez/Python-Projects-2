@@ -76,14 +76,22 @@ htmldoc = response.text
 soup = BeautifulSoup(htmldoc,"html.parser")
 people = soup.find_all("div",{"class":"views-row"})
 umsi_titles = {}
-
+print(people)
 ## It may be helpful to translate the following from English to code:
 
 ## For each element in the list saved in the variable people,
 ## Find the container that holds the name that belongs to that person (HINT: look for something unique, like a property element...)
 ## Find the container that holds the title that belongs to that person (HINT: a class name)
 ## Grab the text of each of those elements and put them in the dictionary umsi_titles properly
+name_list = []
+for elem in soup.find_all('div',{"class":"field-item even", "property":"dc:title"},'h2'):
+	name_list.append(elem.text)
+print(name_list)
 
+title_list = []
+for title in soup.find_all('div',{"class":"field field-name-field-person-titles field-type-text field-label-hidden"}):
+	title_list.append(title.text)
+print(title_list)
 
 
 
