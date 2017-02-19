@@ -3,11 +3,11 @@ import tweepy
 import requests
 import json
 import twitter_info
-import sys
-import datetime
-import urllib
-
-from tweepy import OAuthHandler
+#import sys
+#import datetime
+#import urllib
+import codecs
+#from tweepy import OAuthHandler
 ## SI 206 - W17 - HW5
 ## COMMENT WITH:
 ## Miguel Martinez
@@ -53,7 +53,7 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to g
 ## Write the rest of your code here!
 CACHE_FNAME = "cached_data_socialmedia.json"
 try:
-	cache_file = open(CACHE_FNAME, 'r', encoding = "utf-8")
+	cache_file = open(CACHE_FNAME, 'r')
 	cache_contents = cache_file.read()
 	CACHE_DICTION = json.loads(cache_contents)
 except:
@@ -70,7 +70,7 @@ def get_tweets(username):
 		print('\n')
 		twitter_results = api.search(q=username)
 		CACHE_DICTION[unique_identifier] = twitter_results
-		f = open(CACHE_FNAME, 'w', encoding = "utf-8")
+		f = codecs.open(CACHE_FNAME, 'w', encoding = "utf-8")
 		f.write(json.dumps(CACHE_DICTION))
 		f.close()
 
@@ -85,7 +85,11 @@ search_term = input("Enter a search term: ")
 print("\n")
 three_tweets = get_tweets(search_term)
 for t in three_tweets:
-	print(t)
+	r =t.encode("utf-8")
+	try:
+		print(r.decode("utf-8"))
+	except:
+		print(r)
 
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
