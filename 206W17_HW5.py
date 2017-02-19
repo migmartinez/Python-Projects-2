@@ -3,7 +3,11 @@ import tweepy
 import requests
 import json
 import twitter_info
+import sys
+import datetime
+import urllib
 
+from tweepy import OAuthHandler
 ## SI 206 - W17 - HW5
 ## COMMENT WITH:
 ## Miguel Martinez
@@ -49,7 +53,7 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to g
 ## Write the rest of your code here!
 CACHE_FNAME = "cached_data_socialmedia.json"
 try:
-	cache_file = open(CACHE_FNAME, 'r')
+	cache_file = open(CACHE_FNAME, 'r', encoding = "utf-8")
 	cache_contents = cache_file.read()
 	CACHE_DICTION = json.loads(cache_contents)
 except:
@@ -59,25 +63,30 @@ except:
 def get_tweets(username):
 	unique_identifier = "twitter_{}".format(username)
 	if unique_identifier in CACHE_DICTION:
-		print('used for', username)
+		print('retrieving search term from cache: ', username)
 		twitter_results = CACHE_DICTION[unique_identifier]
 	else:
-		print('getting data for', username)
-		twitter_results = api.user_timeline(username)
+		print('getting new data for search term: ', username)
+		print('\n')
+		twitter_results = api.search(q=username)
 		CACHE_DICTION[unique_identifier] = twitter_results
-		f = open(CACHE_FNAME, 'w')
+		f = open(CACHE_FNAME, 'w', encoding = "utf-8")
 		f.write(json.dumps(CACHE_DICTION))
 		f.close()
 
 	tweet_texts = []
-	for tweet in twitter_results:
-		tweet_texts.append(tweet["text"])
-	return tweet_texts[:3]
+	for tweet in twitter_results['statuses']:
+		tweet_texts.append("TWEET TEXT: " + tweet['text'])
+		tweet_texts.append("CREATED AT: " + tweet['created_at'])
+		tweet_texts.append("\n")
+	return tweet_texts[:9]
 
-three_tweets = get_tweets("umich")
+search_term = input("Enter a search term: ")
+print("\n")
+three_tweets = get_tweets(search_term)
 for t in three_tweets:
-	print("TWEET TEXT: ", t)
-	print("\n")
+	print(t)
+
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
 ## 2. Write a function to get twitter data that works with the caching pattern, so it either gets new data or caches data, depending upon what the input to search for is. You can model this off the class exercise from Tuesday.
