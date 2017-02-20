@@ -3,11 +3,8 @@ import tweepy
 import requests
 import json
 import twitter_info
-#import sys
-#import datetime
-#import urllib
 import codecs
-#from tweepy import OAuthHandler
+
 ## SI 206 - W17 - HW5
 ## COMMENT WITH:
 ## Miguel Martinez
@@ -60,15 +57,16 @@ except:
 	CACHE_DICTION = {}
 
 
-def get_tweets(username):
-	unique_identifier = "twitter_{}".format(username)
+def get_tweets(search):
+	unique_identifier = "{}".format(search)
 	if unique_identifier in CACHE_DICTION:
-		print('retrieving search term from cache: ', username)
+		print('retrieving search term from cache: ', search)
+		print('\n')
 		twitter_results = CACHE_DICTION[unique_identifier]
 	else:
-		print('getting new data for search term: ', username)
+		print('getting new data for search term: ', search)
 		print('\n')
-		twitter_results = api.search(q=username)
+		twitter_results = api.search(q=search)
 		CACHE_DICTION[unique_identifier] = twitter_results
 		f = codecs.open(CACHE_FNAME, 'w', encoding = "utf-8")
 		f.write(json.dumps(CACHE_DICTION))
