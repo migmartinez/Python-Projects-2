@@ -50,8 +50,13 @@ except:
 ## find_urls("http://www.google.com is a great site") should return ["http://www.google.com"]
 ## find_urls("I love looking at websites like http://etsy.com and http://instagram.com and stuff") should return ["http://etsy.com","http://instagram.com"]
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
-
-
+def find_urls(url_string):
+	pattern = r'http:'
+	urls = re.findall(pattern, url_string)
+	if len(urls) > 0:
+		return urls
+	else:
+		return []
 
 
 
