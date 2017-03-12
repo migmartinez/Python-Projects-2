@@ -15,6 +15,7 @@ import json
 import requests
 import tweepy
 import twitter_info # Requires you to have a twitter_info file in this directory
+import re
 from bs4 import BeautifulSoup
 
 ## Tweepy authentication setup
@@ -51,12 +52,9 @@ except:
 ## find_urls("I love looking at websites like http://etsy.com and http://instagram.com and stuff") should return ["http://etsy.com","http://instagram.com"]
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 def find_urls(url_string):
-	pattern = r'[:][/][/].*[.]'
+	pattern = r"https?:\/\/[A-Za-z0-9]{2,}(?:\.+[a-zA-Z0-9]{1,})+"
 	urls = re.findall(pattern, url_string)
-	if len(urls) > 0:
-		return urls
-	else:
-		return []
+	return urls
 
 
 
@@ -74,13 +72,15 @@ def find_urls(url_string):
 def get_umsi_data():
 	unique_identifier = "umsi_directory_data"
 	if unique_identifier in CACHE_DICTION:
-		print('retreiving UMSI directory data')
+		print('retreiving UMSI directory data from local disk')
 		print('\n')
-		umsi_directory_data = CACHE_DICTION[unique_identifier]
+		umsi = CACHE_DICTION[unique_identifier]
+		return umsi
 	else:
 		umsi_directory_data = []
-		result1 = requests.get("https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All", headers = {"User-Agent": 'SI_CLASS'})
-		umsi_directory_data.append(result1.text)
+		print('retreiving UMSI directory data from the web')
+		#result1 = requests.get("https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All", headers = {"User-Agent": 'SI_CLASS'})
+		#umsi_directory_data.append(result1.text)
 		for i in range(12):
 			page = "https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page={}".format(i)
 			results = requests.get(page, headers = {'User-Agent': 'SI_CLASS'})
@@ -89,18 +89,20 @@ def get_umsi_data():
 			f = open(CACHE_FNAME,'w')
 			f.write(json.dumps(CACHE_DICTION))
 			f.close()
-	return umsi_directory_data
+		return umsi_directory_data
 
 
 
 ## PART 2 (b) - Create a dictionary saved in a variable umsi_titles 
 ## whose keys are UMSI people's names, and whose associated values are those people's titles, e.g. "PhD student" or "Associate Professor of Information"...
-print("HERE")
-r = get_umsi_data()
-print(r)
-
-
-
+umsi_titles = {}
+for i in get_umsi_data():
+	soup = BeautifulSoup(i,"html.parser")
+	people = soup.find_all("div",{"class":"views-row"})
+	for x in people:
+		names = x.find("div",{"class":"field-item even", "property":"dc:title"})
+		titles = x.find("div",{"class":"field field-name-field-person-titles field-type-text field-label-hidden"})
+		umsi_titles[names.text] = titles.text
 
 ## PART 3 (a) - Define a function get_five_tweets
 ## INPUT: Any string
