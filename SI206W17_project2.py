@@ -2,7 +2,7 @@
 
 ## COMMENT HERE WITH:
 ## Your name: Miguel Martinez
-## Anyone you worked with on this project:
+## Anyone you worked with on this project: N/A
 
 ## Below we have provided import statements, comments to separate out the parts of the project, instructions/hints/examples, and at the end, tests. See the PDF of instructions for more detail. 
 ## You can check out the SAMPLE206project2_caching.json for an example of what your cache file might look like.
@@ -35,12 +35,10 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser())
 
 ## Write the code to begin your caching pattern setup here.
 CACHE_FNAME = "206project2_caching.json"
-#base = 'twitter_University of Michigan'
 try:
 	cache_file = open(CACHE_FNAME, 'r')
 	cache_contents = cache_file.read()
 	CACHE_DICTION = json.loads(cache_contents)
-#	CACHE_DICTION[base] = {}
 except:
 	CACHE_DICTION = {}
 
@@ -55,7 +53,7 @@ except:
 ## find_urls("I love looking at websites like http://etsy.com and http://instagram.com and stuff") should return ["http://etsy.com","http://instagram.com"]
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 def find_urls(url_string):
-	pattern = r"https?:\/\/[A-Za-z0-9]{2,}(?:\.+[a-zA-Z0-9]{1,})+"
+	pattern = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 	urls = re.findall(pattern, url_string)
 	return urls
 
@@ -111,7 +109,6 @@ for i in get_umsi_data():
 ## RETURN VALUE: A list of strings: A list of just the text of 5 different tweets that result from the search.
 def get_five_tweets(search):
 	unique_identifier = "twitter_{}".format(search)
-	#base = "twitter_University of Michigan"
 	if unique_identifier in CACHE_DICTION:
 		print('retreiving search term for cache: ', search)
 		print('\n')
@@ -141,10 +138,7 @@ tweet_urls_found = ()
 for tweet in five_tweets:
 	URL = (find_urls(tweet))
 	if URL:
-		tweet_urls_found = tweet_urls_found + tuple(URL)
-
-print(tweet_urls_found)
-
+		tweet_urls_found = tweet_urls_found + tuple(URL)	
 
 ########### TESTS; DO NOT CHANGE ANY CODE BELOW THIS LINE! ###########
 
