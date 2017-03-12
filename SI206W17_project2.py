@@ -51,7 +51,7 @@ except:
 ## find_urls("I love looking at websites like http://etsy.com and http://instagram.com and stuff") should return ["http://etsy.com","http://instagram.com"]
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 def find_urls(url_string):
-	pattern = r'http:'
+	pattern = r'[:][/][/].*[.]'
 	urls = re.findall(pattern, url_string)
 	if len(urls) > 0:
 		return urls
@@ -71,18 +71,33 @@ def find_urls(url_string):
 
 ## Start with this page: https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All  
 ## End with this page: https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=11 
-
-
-
-
+def get_umsi_data():
+	unique_identifier = "umsi_directory_data"
+	if unique_identifier in CACHE_DICTION:
+		print('retreiving UMSI directory data')
+		print('\n')
+		umsi_directory_data = CACHE_DICTION[unique_identifier]
+	else:
+		umsi_directory_data = []
+		result1 = requests.get("https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All", headers = {"User-Agent": 'SI_CLASS'})
+		umsi_directory_data.append(result1.text)
+		for i in range(12):
+			page = "https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page={}".format(i)
+			results = requests.get(page, headers = {'User-Agent': 'SI_CLASS'})
+			umsi_directory_data.append(results.text)
+			CACHE_DICTION[unique_identifier] = umsi_directory_data
+			f = open(CACHE_FNAME,'w')
+			f.write(json.dumps(CACHE_DICTION))
+			f.close()
+	return umsi_directory_data
 
 
 
 ## PART 2 (b) - Create a dictionary saved in a variable umsi_titles 
 ## whose keys are UMSI people's names, and whose associated values are those people's titles, e.g. "PhD student" or "Associate Professor of Information"...
-
-
-
+print("HERE")
+r = get_umsi_data()
+print(r)
 
 
 
