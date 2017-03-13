@@ -53,7 +53,7 @@ except:
 ## find_urls("I love looking at websites like http://etsy.com and http://instagram.com and stuff") should return ["http://etsy.com","http://instagram.com"]
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 def find_urls(url_string):
-	pattern = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+	pattern = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))*"
 	urls = re.findall(pattern, url_string)
 	return urls
 
@@ -136,9 +136,9 @@ five_tweets = get_five_tweets("University of Michigan")
 ## PART 3 (c) - Iterate over the five_tweets list, invoke the find_urls function that you defined in Part 1 on each element of the list, and accumulate a new list of each of the total URLs in all five of those tweets in a variable called tweet_urls_found. 
 tweet_urls_found = ()
 for tweet in five_tweets:
-	URL = (find_urls(tweet))
-	if URL:
-		tweet_urls_found = tweet_urls_found + tuple(URL)	
+	link = (find_urls(tweet))
+	if link:
+		tweet_urls_found = tweet_urls_found + tuple(link)	
 
 ########### TESTS; DO NOT CHANGE ANY CODE BELOW THIS LINE! ###########
 

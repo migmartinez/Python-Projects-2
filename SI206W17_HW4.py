@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 
 ## PART 1 (100 points) - Get the HTML data from http://www.nytimes.com (the New York Times home page) and save it in a file called nytimes_data.html.
 ## Write the Python code to do so here.
+#get HTML data
 html_data = requests.get('http://www.nytimes.com').text
 infile = open('nytimes_data.html', 'w', encoding='utf-8')
 infile.write(html_data)
@@ -41,6 +42,7 @@ infile.close()
 ## Write your code to complete this task here.
 ## HINT: Remember that you'll need to open the file you created in Part 1, read the contets into one big string, and make a BeautifulSoup object out of that string!
 ## NOTE that the provided link does not include saving the online data in a file as part of the process. But it still provides very useful hints/tricks about how to look for and identify the headlines on the NY Times page.
+# code to get first 10 headline strings
 infile2 = open('nytimes_data.html', 'r', encoding='utf-8')
 soup = BeautifulSoup(infile2, 'html.parser')
 nytimes_long_headlines = []
@@ -79,7 +81,13 @@ umsi_titles = {}
 ## Find the container that holds the name that belongs to that person (HINT: look for something unique, like a property element...)
 ## Find the container that holds the title that belongs to that person (HINT: a class name)
 ## Grab the text of each of those elements and put them in the dictionary umsi_titles properly
+# cache data that contains names and titles for each person on page, save in dictionary.
+response = requests.get("https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All")
+htmldoc = response.text
 
+soup = BeautifulSoup(htmldoc,"html.parser")
+people = soup.find_all("div",{"class":"views-row"})
+umsi_titles = {}
 for i in people:
 	for title in i.find_all('div',{"class":"field field-name-field-person-titles field-type-text field-label-hidden"}):
 		for elem in i.find_all('div',{"class":"field-item even", "property":"dc:title"},'h2'):

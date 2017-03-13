@@ -45,7 +45,8 @@ access_token_secret = twitter_info.access_token_secret
 ## Set up your authentication to Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to grab stuff from twitter with your authentication, and return it in a JSON-formatted way
+api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) 
+# Set up library to grab stuff from twitter with your authentication, and return it in a JSON-formatted way
 
 ## Write the rest of your code here!
 CACHE_FNAME = "cached_data_socialmedia.json"
